@@ -334,7 +334,13 @@ app.post("/api/generate", async (req, res) => {
   const languageName = languageMap[language as string] || "Hindi (हिन्दी)";
 
   const apiKey = process.env.GEMINI_API_KEY;
-  const isMockMode = !apiKey || apiKey === "MY_GEMINI_API_KEY";
+  // Intelligent check: if there is no key, or if it is a generic placeholder, or if it doesn't start with the standard Gemini prefix "AIzaSy"
+  const isMockMode = !apiKey || 
+                     apiKey.trim() === "" || 
+                     apiKey === "MY_GEMINI_API_KEY" || 
+                     apiKey === "PLACEHOLDER" ||
+                     apiKey === "undefined" ||
+                     !apiKey.startsWith("AIzaSy");
 
   if (isMockMode) {
     console.log(`[Mock Mode] Generating mock response for: ${topic} (${niche} - ${videoType} in ${languageName})`);
@@ -433,10 +439,19 @@ Niche: ${niche}`;
     // Graceful automatic fallback instead of returning 500 error!
     // The user experiences a beautiful, seamless layout instead of a broken error view.
     console.log(`[Emergency Fallback] Activating custom fallback generator for topic "${topic}"`);
-    res.json({
-      language: languageName,
-      ...getMockData(topic, niche, videoType, true, languageName)
-    });
+    try {
+      const fallbackPayload = getMockData(topic, niche, videoType, true, languageName);
+      res.json({
+        language: languageName,
+        ...fallbackPayload
+      });
+    } catch (fallbackErr: any) {
+      console.error("Critical fallback generator exception:", fallbackErr);
+      res.status(500).json({
+        error: "Server processing failed",
+        details: err?.message || err?.toString() || "Unknown generation or fallback error"
+      });
+    }
   }
 });
 
