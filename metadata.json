@@ -1,0 +1,6 @@
+{
+  "name": "CreatorAI",
+  "description": "The ultimate AI SaaS platform for YouTube creators to turn any topic into a complete viral video publishing package with viral ideas, scripts, hooks, thumbnail concepts, B-roll guides, and SEO packs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
