@@ -84,6 +84,41 @@ export default function AIPackageView({
     };
   }, []);
 
+  // Dynamically auto-align default selected voice with the package's target language
+  React.useEffect(() => {
+    if (voicesList.length === 0 || !packageData.language) return;
+
+    const lowerLang = packageData.language.toLowerCase();
+    let prefix = "hi"; // default fallback sub-match prefix
+    if (lowerLang.includes("hindi")) prefix = "hi";
+    else if (lowerLang.includes("english") || lowerLang.includes("hinglish")) prefix = "en";
+    else if (lowerLang.includes("marathi")) prefix = "mr";
+    else if (lowerLang.includes("gujarati")) prefix = "gu";
+    else if (lowerLang.includes("bengali") || lowerLang.includes("bangla")) prefix = "bn";
+    else if (lowerLang.includes("tamil")) prefix = "ta";
+    else if (lowerLang.includes("telugu")) prefix = "te";
+    else if (lowerLang.includes("kannada")) prefix = "kn";
+    else if (lowerLang.includes("malayalam")) prefix = "ml";
+    else if (lowerLang.includes("punjabi")) prefix = "pa";
+    else if (lowerLang.includes("urdu")) prefix = "ur";
+    else if (lowerLang.includes("odia")) prefix = "or";
+    else if (lowerLang.includes("assamese")) prefix = "as";
+
+    // Try finding an exact prefix match first, then container matches
+    const matchedVoice = voicesList.find(v => 
+      v.lang.toLowerCase().startsWith(prefix + "-") || 
+      v.lang.toLowerCase() === prefix
+    ) || voicesList.find(v => 
+      v.lang.toLowerCase().includes(prefix)
+    ) || voicesList.find(v => 
+      v.name.toLowerCase().includes(lowerLang)
+    );
+
+    if (matchedVoice) {
+      setSelectedVoice(matchedVoice);
+    }
+  }, [voicesList, packageData.language]);
+
   const handlePlayScript = (text: string, segmentKey: string) => {
     if (typeof window === "undefined" || !window.speechSynthesis) {
       alert("Text-to-Speech is not fully supported in this browser environment. Try opening in a New Tab!");
@@ -106,6 +141,28 @@ export default function AIPackageView({
     if (selectedVoice) {
       utterance.voice = selectedVoice;
     }
+
+    // Set BCP-47 fallback language tag in utterance to match selected language accent cleanly
+    if (packageData.language) {
+      const lowerLang = packageData.language.toLowerCase();
+      let langCode = "hi-IN";
+      if (lowerLang.includes("hindi")) langCode = "hi-IN";
+      else if (lowerLang.includes("english") || lowerLang.includes("hinglish")) langCode = "en-IN";
+      else if (lowerLang.includes("marathi")) langCode = "mr-IN";
+      else if (lowerLang.includes("gujarati")) langCode = "gu-IN";
+      else if (lowerLang.includes("bengali") || lowerLang.includes("bangla")) langCode = "bn-IN";
+      else if (lowerLang.includes("tamil")) langCode = "ta-IN";
+      else if (lowerLang.includes("telugu")) langCode = "te-IN";
+      else if (lowerLang.includes("kannada")) langCode = "kn-IN";
+      else if (lowerLang.includes("malayalam")) langCode = "ml-IN";
+      else if (lowerLang.includes("punjabi")) langCode = "pa-IN";
+      else if (lowerLang.includes("urdu")) langCode = "ur-PK";
+      else if (lowerLang.includes("odia")) langCode = "or-IN";
+      else if (lowerLang.includes("assamese")) langCode = "as-IN";
+      
+      utterance.lang = langCode;
+    }
+
     utterance.rate = speechRate;
     utterance.pitch = speechPitch;
 

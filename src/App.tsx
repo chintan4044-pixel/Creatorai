@@ -134,6 +134,11 @@ export default function App() {
     setErrorMessage(null);
     setActivePackage(null);
 
+    // Guaranteed 100 seconds loading delay to give a premium, high-fidelity compilation experience (between 1:30 and 2:00 mins)
+    const delayPromise = new Promise(resolve => setTimeout(resolve, 100000));
+
+    let finalPackage: YouTubePublishingPackage | null = null;
+
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -148,31 +153,29 @@ export default function App() {
         throw new Error(errorData.details || errorData.error || "Server response failed");
       }
 
-      const packageData: YouTubePublishingPackage = await response.json();
-      
-      // Successfully generated content!
-      setActivePackage(packageData);
+      finalPackage = await response.json();
+    } catch (err: any) {
+      console.warn("Generation API Failed. Deploying ultra-resilient client-side sandbox compiler.", err);
+      // Auto-fallback so the user never gets an ugly error banner, even when hosting on static sites like Vercel
+      finalPackage = getClientMockData(topic, niche, videoType, language);
+    }
+
+    // Wait until the full 100 seconds loader has finished running
+    await delayPromise;
+
+    if (finalPackage) {
+      setActivePackage(finalPackage);
 
       // Decrement credits if on Free plan AND not in fallback mode
-      if (user.plan === SubscriptionPlan.FREE && !packageData.isFallback) {
+      if (user.plan === SubscriptionPlan.FREE && !finalPackage.isFallback) {
         saveUserSession({
           ...user,
           creditsRemaining: Math.max(0, user.creditsRemaining - 1)
         });
       }
-
-    } catch (err: any) {
-      console.warn("Generation API Failed. Deploying ultra-resilient client-side sandbox compiler.", err);
-      
-      // Auto-fallback so the user never gets an ugly error banner, even when hosting on static sites like Vercel
-      const localPackage = getClientMockData(topic, niche, videoType, language);
-      setActivePackage(localPackage);
-      
-      // Set error message to null so that no scary red error banners ever display in sandbox mode!
-      setErrorMessage(null);
-    } finally {
-      setIsGenerating(false);
     }
+
+    setIsGenerating(false);
   };
 
   const handleSaveToVault = () => {

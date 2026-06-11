@@ -79,14 +79,43 @@ export default function SaasDashboard({
   const [selectedLanguage, setSelectedLanguage] = useState("hi");
   const [tipIndex, setTipIndex] = useState(0);
 
-  // Rotate tips
+  // High-fidelity processing simulator (1:30 to 2 minutes, exactly 100 seconds)
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingTimeRemaining, setLoadingTimeRemaining] = useState(100);
+
+  // Rotate tips & manage progress simulator
   useEffect(() => {
-    if (!isGenerating) return;
-    const interval = setInterval(() => {
+    if (!isGenerating) {
+      setLoadingProgress(0);
+      setLoadingTimeRemaining(100);
+      return;
+    }
+
+    const tipInterval = setInterval(() => {
       setTipIndex((prev) => (prev + 1) % LOADING_CREATOR_TIPS.length);
     }, 4500);
-    return () => clearInterval(interval);
+
+    const totalDuration = 100; // 100 seconds
+    let elapsed = 0;
+
+    const progressInterval = setInterval(() => {
+      elapsed += 1;
+      const progressPercent = (elapsed / totalDuration) * 100;
+      setLoadingProgress(progressPercent >= 100 ? 99.9 : progressPercent);
+      setLoadingTimeRemaining(Math.max(0, totalDuration - elapsed));
+    }, 1000);
+
+    return () => {
+      clearInterval(tipInterval);
+      clearInterval(progressInterval);
+    };
   }, [isGenerating]);
+
+  const formatCountdown = (secs: number) => {
+    const mins = Math.floor(secs / 60);
+    const remainingSecs = secs % 60;
+    return `${mins}:${remainingSecs.toString().padStart(2, "0")}`;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -377,7 +406,7 @@ export default function SaasDashboard({
               </div>
 
               {/* Tips content */}
-              <div className="space-y-2 max-w-md">
+              <div className="space-y-2 max-w-md w-full">
                 <h3 className="text-white font-bold text-lg tracking-tight">
                   Crafting Algorithmic Gold...
                 </h3>
@@ -395,8 +424,33 @@ export default function SaasDashboard({
                 </AnimatePresence>
               </div>
 
+              {/* Real-time high-fidelity progress tracker */}
+              <div className="w-full max-w-sm space-y-2 mt-4 bg-zinc-900/40 p-4 rounded-xl border border-zinc-800/60 backdrop-blur">
+                <div className="flex justify-between items-center text-xs font-mono text-zinc-400">
+                  <span>{loadingProgress < 100 ? "COMPILING INTEGRATIONS..." : "READY TO UNVEIL..."}</span>
+                  <span className="text-indigo-400 font-bold">{Math.round(loadingProgress)}%</span>
+                </div>
+                <div className="w-full bg-zinc-950 border border-zinc-800 rounded-full h-3 overflow-hidden p-0.5">
+                  <div 
+                    className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 h-full rounded-full transition-all duration-300"
+                    style={{ width: `${loadingProgress}%` }}
+                  />
+                </div>
+                <div className="flex justify-between items-center text-[10px] sm:text-[11px] font-mono text-zinc-500 pt-1">
+                  <span className="text-zinc-400 text-left">
+                    {loadingProgress < 25 && "Step 1/4: Analyzing Trend Velocity..."}
+                    {loadingProgress >= 25 && loadingProgress < 50 && "Step 2/4: Drafting Hooks & Timing..."}
+                    {loadingProgress >= 50 && loadingProgress < 75 && "Step 3/4: Formatting Script Dialogs..."}
+                    {loadingProgress >= 75 && "Step 4/4: Generating Thumbnail Art & SEO..."}
+                  </span>
+                  <span className="text-indigo-300 font-bold bg-zinc-950 px-2 py-0.5 rounded border border-zinc-800 shrink-0">
+                    ⏱️ {formatCountdown(loadingTimeRemaining)}
+                  </span>
+                </div>
+              </div>
+
               <div className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-[10px] font-mono text-zinc-500">
-                DO NOT REFRESH OR CLOSE THE APPMOBILE-READY
+                PROESSING... PLEASE WAIT • DO NOT REFRESH
               </div>
             </motion.div>
           )}
