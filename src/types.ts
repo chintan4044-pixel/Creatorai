@@ -81,6 +81,67 @@ export interface AIVoiceInstructions {
   emotion: string;
 }
 
+// Elite Strategist interfaces
+export interface EliteThinkingProcess {
+  nicheAnalysis: string;
+  targetAudience: string;
+  viewerPsychology: string;
+  competitionLevel: string;
+  searchIntent: string;
+}
+
+export interface EliteViralTitle {
+  title: string;
+  reason: string;
+  ctrScore: number;
+  curiosityScore: number;
+  searchPotentialScore: number;
+}
+
+export interface EliteThumbnailHook {
+  hookText: string; // Max 4 words
+  visualConcept: string;
+}
+
+export interface EliteSEO {
+  bestSeoTitle: string;
+  optimizedDescription: string;
+  tags: string[]; // exactly 15 tags
+  primaryKeywords: string[]; // exactly 5 keywords
+}
+
+export interface EliteViralVideoIdea {
+  title: string;
+  concept: string;
+  whyClick: string;
+  whyWatch: string;
+  viralPotential: string;
+}
+
+export interface EliteScriptHook {
+  hookText: string;
+  strategy: string;
+}
+
+export interface EliteRetentionBooster {
+  dropOffPoints: string;
+  curiosityLoops: string;
+  reEngagementLines: string;
+}
+
+export interface EliteCompetitorIntelligence {
+  successfulVideoPatterns: string;
+  nicheTrends: string;
+  strategiesWorkingNow: string;
+}
+
+export interface EliteFinalRecommendation {
+  bestTitle: string;
+  bestThumbnailHook: string;
+  bestOpeningHook: string;
+  implementationStrategy: string;
+}
+
 // Complete Generation Response Schema
 export interface YouTubePublishingPackage {
   topic: string;
@@ -90,13 +151,25 @@ export interface YouTubePublishingPackage {
   isFallback?: boolean;
   language?: string;
   
-  viralIdeas: ViralVideoIdea[];
-  hooks: RetentionHook[];
-  script: VideoScript;
-  thumbnail: ThumbnailConcept;
-  bRollSuggestions: BRollSuggestion[];
-  seoPackage: SEOPackage;
-  voiceInstructions: AIVoiceInstructions;
+  // Legacy fields kept for backward compatibility (optional)
+  viralIdeas?: ViralVideoIdea[];
+  hooks?: RetentionHook[];
+  script?: VideoScript;
+  thumbnail?: ThumbnailConcept;
+  bRollSuggestions?: BRollSuggestion[];
+  seoPackage?: SEOPackage;
+  voiceInstructions?: AIVoiceInstructions;
+
+  // Elite Strategist Fields
+  thinkingProcess?: EliteThinkingProcess;
+  viralTitles?: EliteViralTitle[];
+  thumbnailHooks?: EliteThumbnailHook[];
+  seo?: EliteSEO;
+  viralVideoIdeas?: EliteViralVideoIdea[];
+  scriptHooks?: EliteScriptHook[];
+  retentionBooster?: EliteRetentionBooster;
+  competitorIntelligence?: EliteCompetitorIntelligence;
+  finalRecommendation?: EliteFinalRecommendation;
 }
 
 // SaaS User Session Interfaces

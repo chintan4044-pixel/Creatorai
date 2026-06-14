@@ -54,6 +54,7 @@ interface SaasDashboardProps {
   onGenerate: (topic: string, niche: NicheType, videoType: VideoType, language: string) => Promise<void>;
   isGenerating: boolean;
   onUpgradeClick: () => void;
+  onResetCredits: () => void;
 }
 
 // Fun engaging tips that rotate during generation
@@ -71,7 +72,8 @@ export default function SaasDashboard({
   user, 
   onGenerate, 
   isGenerating, 
-  onUpgradeClick 
+  onUpgradeClick,
+  onResetCredits
 }: SaasDashboardProps) {
   const [topic, setTopic] = useState("");
   const [selectedNiche, setSelectedNiche] = useState<NicheType | null>(null);
@@ -164,6 +166,17 @@ export default function SaasDashboard({
                 {user.plan === SubscriptionPlan.FREE ? user.creditsRemaining : "∞"}
               </span>
               <span className="text-zinc-500 text-xs">/ {user.plan === SubscriptionPlan.FREE ? user.creditsMax : "∞"}</span>
+              {user.plan === SubscriptionPlan.FREE && (
+                <button
+                  id="dashboard-refill-credits-btn"
+                  type="button"
+                  onClick={onResetCredits}
+                  title="Refill Credits back to 3"
+                  className="ml-2 px-2 py-0.5 rounded bg-emerald-550/20 hover:bg-emerald-550/30 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold uppercase transition-all select-none cursor-pointer"
+                >
+                  Refill 3 ⚡
+                </button>
+              )}
             </div>
           </div>
           <div className="h-8 w-px bg-zinc-800" />

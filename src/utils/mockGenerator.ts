@@ -1,6 +1,6 @@
 import { YouTubePublishingPackage, VideoType, NicheType } from "../types";
 
-const languageMap: Record<string, string> = {
+export const languageMap: Record<string, string> = {
   "hi": "Hindi (हिन्दी)",
   "en-IN": "English (Hinglish/Indian Accent Style)",
   "mr": "Marathi (मराठी)",
@@ -449,6 +449,129 @@ export function getClientMockData(
       tone: `Gravelly, suspenseful, high-conviction delivery in custom native ${languageName}`,
       pace: "135-145 words per minute, incorporating 1.5-second dramatic pauses after rhetorical hooks",
       emotion: "Intense understated urgency, total confidence, and authentic local authority"
+    },
+
+    // Elite YouTube Strategist Fields
+    thinkingProcess: {
+      nicheAnalysis: `The ${niche} domain is experiencing substantial hyper-competition, but there is an underserved audience segment actively searching for high-quality, actionable insights on ${topic}. By focusing on transparency, proof, and high-quality hooks, we can disrupt standard regurgitated advice and gain significant market share.`,
+      targetAudience: `Tech-fluent professionals, ambitious side-hustlers, and curious learners aged 18-35 who value raw realism, practical advice, and hate typical generic motivational fluff.`,
+      viewerPsychology: `Intense desire to overcome immediate roadblocks relating to ${topic}, balanced with a deep-seated fear of wasting precious time on outdated paradigms. They desire a clear shortcut or secret 'cheat-code' to quickly bypass failure.`,
+      competitionLevel: `Highly saturated at the superficial level with generic AI-generated scripts, leaving a massive blue-ocean gap for authentic, data-backed high-density investigations.`,
+      searchIntent: `Primary queries are centered on 'how to master', 'common trap avoidance' and 'proven results blueprint' for "${topic}".`
+    },
+    viralTitles: [
+      {
+        title: replaceTopic(data.titles[0] || `The Shocking Truth About TOPIC Nobody Tells You`),
+        reason: "Capitalizes heavily on curiosity gap psychology and skepticism of mainstream advice.",
+        ctrScore: 94,
+        curiosityScore: 98,
+        searchPotentialScore: 91
+      },
+      {
+        title: replaceTopic(data.titles[1] || `Why 99% Of People Fail At TOPIC (Fix This Now)`),
+        reason: "Negative cognitive framing triggers profound loss aversion and fear of failure, forcing click-intent.",
+        ctrScore: 96,
+        curiosityScore: 95,
+        searchPotentialScore: 94
+      },
+      {
+        title: replaceTopic(data.titles[2] || `I Tried TOPIC For 30 Days. It Broke Me.`),
+        reason: "Elite case study format establishing realistic stakes, human struggle, and extreme emotional investment.",
+        ctrScore: 97,
+        curiosityScore: 99,
+        searchPotentialScore: 88
+      }
+    ],
+    thumbnailHooks: [
+      {
+        hookText: replaceTopic(data.textOverlay || "THE LIE."),
+        visualConcept: `Extreme close-up of a creator's eyes in shadow, with a giant glowing neon red 'X' over standard "${topic}" charts.`
+      },
+      {
+        hookText: "99% FAIL.",
+        visualConcept: `Split-screen comparison showing a red-tinted failing chart on the left vs a glowing green ascending trend line on the right.`
+      },
+      {
+        hookText: "DO THIS.",
+        visualConcept: `Hand wearing a dark leather glove pointing towards a mysterious, glowing, locked vault containing "${topic}" files.`
+      }
+    ],
+    seo: {
+      bestSeoTitle: replaceTopic(data.seoTitle || `How to Master TOPIC - Step-by-Step Blueprint`),
+      optimizedDescription: `${replaceTopic(data.descriptionSnippet || `Struggling with TOPIC? Fix it today with this guide.`)}\n\nTimestamps:\n0:00 - Introduction\n0:30 - The Main Mistake\n1:45 - The Unfair Strategy\n3:00 - Step-by-Step Blueprint\n4:15 - Final Formula`,
+      tags: [
+        replaceTopic(topic), `${topic} tips`, `${topic} secrets`, `${niche.toLowerCase()}`,
+        `${topic} mistakes`, `${topic} tutorial`, `learn ${topic}`, `advanced ${topic}`, `how to do ${topic}`,
+        `${topic} masterclass`, `${topic} blueprint`, `${topic} success`, `${topic} 2026`, `${topic} strategy`, `${topic} guide`
+      ],
+      primaryKeywords: [`${topic} secrets`, `${topic} mistakes`, `master ${topic}`, `conquer ${topic}`, `${niche.toLowerCase()} blueprint`]
+    },
+    viralVideoIdeas: [
+      {
+        title: `The ${topic} Trap Every Creator Falls For`,
+        concept: `Exposing a widely accepted piece of advice for "${topic}" as a complete myth, demonstrating how it silent kills creator results, and introducing a simple alternative.`,
+        whyClick: "Pattern interrupt. Viewers love to see common beliefs disproved by experts.",
+        whyWatch: "Viewer retention is sustained by wanting to verify if they are currently making this exact fatal mistake.",
+        viralPotential: "Extremely High (Niche Agnostic Trigger)"
+      },
+      {
+        title: `Inside An Elite Creator's ${topic} Playbook`,
+        concept: `An expert-level breakdown of the highest-performing channels applying this mechanism to generate millions, detailing their silent growth levers.`,
+        whyClick: "Aspirational trigger. Combines money psychology with deep structural analysis.",
+        whyWatch: "Logical teardown keeps learners engaged to extract specific action checklists.",
+        viralPotential: "Massive (Incurably high CTR)"
+      },
+      {
+        title: `The 10-Minute ${topic} Cheat Code`,
+        concept: `A highly rapid, step-by-step masterclass demonstrating an unfair shortcut that compresses weeks of painful trial-and-error into 10 minutes of execution.`,
+        whyClick: "Convenience, speed, and immediate high-value proposition.",
+        whyWatch: "Fast-paced visual changes keep eyes glued to replicate the speed on screen.",
+        viralPotential: "High (Search and recommendation friendly)"
+      },
+      {
+        title: `Why Your ${topic} is Stuck At 0 (Fix This First)`,
+        concept: `A diagnostics-focused format that highlights the exact friction point slowing down initial feedback loops, explaining how to clear it instantly.`,
+        whyClick: "Hyper-targeted empathy. Addresses the viewer's acute pain head-on.",
+        whyWatch: "Saves them from a feeling of stagnant failure, offering instant closure.",
+        viralPotential: "Very High (Relevancy score = 10/10)"
+      },
+      {
+        title: `The Next 10 Years of ${topic} Start Today`,
+        concept: `A forward-looking trend analysis predicting major structural shifts in this space and explaining how small channels can front-run the entire market.`,
+        whyClick: "Fear of missing out, early adopter mindset, and high authority projection.",
+        whyWatch: "Intellectual curiosity regarding future predictions holds attention dynamically.",
+        viralPotential: "High (High CPM / Business interest)"
+      }
+    ],
+    scriptHooks: [
+      {
+        hookText: replaceTopic(data.hooks[0] || `Everything you've been told about TOPIC is a flat-out lie... and this single chart proves it.`),
+        strategy: "Pattern interrupt combined with immediate visual proof."
+      },
+      {
+        hookText: replaceTopic(data.hooks[1] || `There is a silent killer in ${niche} right now, and 99% of you are making it without realizing...`),
+        strategy: "Elevated stakes and negative psychological profiling."
+      },
+      {
+        hookText: `I spent 1,000 hours analyzing ${topic} so you don't have to. Here is the exact cheat code.`,
+        strategy: "Unfair trade of massive effort for immediate distilled action."
+      }
+    ],
+    retentionBooster: {
+      dropOffPoints: "Drop-off occurs heavily at the 12-second mark (if the intro is too slow or introduces generic channel branding) and at the 2-minute mark (if the transition to dry explanation is not bridged with curiosity loops).",
+      curiosityLoops: `Immediately mention a specific 'unfair trap' at 0:15 but delay the breakdown until 2:30. This creates an open psychological loop that forces viewers to stay.`,
+      reEngagementLines: `Write statements like: 'But that's where most people get absolutely scammed. Look at this exact line...' or 'If you ignore this next step, everything we just did is completely useless.'`
+    },
+    competitorIntelligence: {
+      successfulVideoPatterns: "Top-performing videos feature high contrast split-screen thumbnails, immediate cold starts (no introductions), and focus intensely on a single acute pain point rather than general advice.",
+      nicheTrends: "There is a massive rise in 'anti-guru' style audits, where creators react to and bust popular myths with actual real-life data and transparent metrics.",
+      strategiesWorkingNow: "Using highly rapid visual b-roll (swapping every 2-3 seconds) paired with a deep, authoritative voice narration style is currently crushing retention in this niche."
+    },
+    finalRecommendation: {
+      bestTitle: replaceTopic(data.titles[1] || `Why 99% Of People Fail At TOPIC (Fix This Now)`),
+      bestThumbnailHook: replaceTopic(data.textOverlay || "99% FAIL."),
+      bestOpeningHook: replaceTopic(data.hooks[0] || `Everything you've been told about TOPIC is a flat-out lie... and this single chart proves it.`),
+      implementationStrategy: `Adopt a bold, authoritative documentary storytelling tone. Cold-open with the opening hook over a dramatic black b-roll graphic, and keep the main thumbnail focus centered purely on the '${replaceTopic(data.textOverlay || "99% FAIL.")}' core text overlay on a highly distinct red-vs-green split screen.`
     }
   };
 }

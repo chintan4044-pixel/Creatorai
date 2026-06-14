@@ -75,8 +75,14 @@ export default function App() {
         // Automatically migrate any legacy fallback user emails to the secure admin email on refresh
         if (parsed.email === "creator@youtube.studio") {
           parsed.email = "chintan70221@gmail.com";
-          localStorage.setItem(PROFILE_LOCAL_KEY, JSON.stringify(parsed));
         }
+        
+        // Daily credit 3 vapas dedo - Auto-reset to 3 complementary daily credits on page load
+        if (parsed.plan === SubscriptionPlan.FREE && parsed.creditsRemaining < 3) {
+          parsed.creditsRemaining = 3;
+        }
+        
+        localStorage.setItem(PROFILE_LOCAL_KEY, JSON.stringify(parsed));
         setUser(parsed);
       } catch (err) {
         console.error("Failed to parse local stored user.", err);
@@ -413,6 +419,7 @@ export default function App() {
                   onGenerate={handleGeneratePackage}
                   isGenerating={isGenerating}
                   onUpgradeClick={() => setActiveTab("pricing")}
+                  onResetCredits={handleResetCredits}
                 />
               )}
             </div>
